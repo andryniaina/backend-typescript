@@ -17,8 +17,6 @@ connectDB();
 const app = express();
 const port = process.env.PORT || 5005;
 
-app.options("*", cors());
-
 //Middleware CORS
 app.use(cors());
 
