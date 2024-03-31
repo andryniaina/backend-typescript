@@ -9,6 +9,7 @@ import userRoutes from "./routes/userRoutes" ;
 import voteRoutes from "./routes/voteRoutes" ;
 import candidateRoutes from "./routes/candidate.routes" ;
 import voterRoutes from "./routes/voter.routes" ;
+import stationRoutes from "./routes/station.routes"
 
 const connectDB = require('./config/db');
 
@@ -28,6 +29,7 @@ app.use('/api/auth', userRoutes);
 app.use('/api/vote',voteRoutes);
 app.use('/api/admin/candidate',candidateRoutes) ;
 app.use('/api/admin/voter',voterRoutes) ;
+app.use('/api/admin/station',stationRoutes) ;
 
 app.get("/", (_, res) => {
   res.status(200).json({ message: "Evote API" });

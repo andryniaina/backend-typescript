@@ -6,22 +6,42 @@ const candidateSchema = new Schema(
       type: String,
       required: [true, "Please add name"],
     },
-    party: {
+    partyEntity: {
       type: String,
-      required: [true, "Please add party"],
+      required: [true, "Please add partyEntity"],
     },
-    age: {
-      type: Number,
-      required: [true, "Please add age"],
+    compaignLocation: {
+      type: String,
+      required: [true, "Please add compaignLocation"],
+    },
+    dateBirth: {
+      type: String,
+      required: [true, "Please add dateBirth"],
+    },
+    birthLocation: {
+      type: String,
+      required: [true, "Please add birthLocation"],
+    },
+    cin: {
+      type: String,
+      required: [true, "Please add cin"],
+    },
+    dateCin: {
+      type: String,
+      required: [true, "Please add dateCin"]
+    },
+    locationCin: {
+      type: String,
+      required: [true, "Please add locationCin"]
     },
     imageUrl: {
       type: String,
-      required: [true, "Please add image"],
+      required: false,
     },
     description: {
       type: String,
       required: [true, "Please add description"],
-    }
+    },
   },
   {
     timestamps: true,

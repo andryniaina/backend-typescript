@@ -2,21 +2,37 @@ import mongoose, { Schema } from "mongoose";
 
 const voterSchema = new Schema(
   {
-    registrarId: {
+    cin: {
         type: String,
-        required: [true, "Please add registrarId"],
+        required: [true, "Please add cin"],
     },
     name: {
       type: String,
       required: [true, "Please add name"],
     },
+    firstname: {
+      type: String,
+      required: [true, "Please add firstname"],
+    },
     gender: {
       type: String,
       required: [true, "Please add gender"],
     },
-    age: {
-      type: Number,
-      required: [true, "Please add age"],
+    birthDate: {
+      type: String,
+      required: [true, "Please add birth date"]
+    },
+    birthLocation: {
+      type: String,
+      required: [true, "Please add birth location"]
+    },
+    dateCin: {
+      type: String,
+      required: [true, "Please add dateCin"]
+    },
+    locationCin: {
+      type: String,
+      required: [true, "Please add locationCin"]
     },
     address: {
       type: String,
@@ -25,6 +41,10 @@ const voterSchema = new Schema(
     email: {
       type: String,
       required: [true, "Please add email"],
+    },
+    password: {
+      type: String,
+      default: "",
     }
   },
   {
