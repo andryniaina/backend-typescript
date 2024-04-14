@@ -6,15 +6,17 @@ import {
   updateCandidateHandler,
   deleteCandidateHandler
 } from "../controllers/candidate.controller";
+import multer from 'multer';
+const upload = multer({ dest: "uploads/" });
 
 const { protect } = require('../middleware/authMiddleware')
 
 const router = express.Router();
 
-router.post("/create", protect, createCandidateHandler);
+router.post("/create", upload.single("imageUrl"), protect, createCandidateHandler);
 router.get("/get", protect, getAllCandidatesHandler);
 router.get("/get/:num", protect, getCandidateByNumHandler);
-router.put("/update/:num", protect ,updateCandidateHandler);
+router.put("/update/:num", upload.single("imageUrl"), protect ,updateCandidateHandler);
 router.delete("/delete/:num", protect, deleteCandidateHandler);
 
 export default router;

@@ -25,6 +25,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.use('/static', express.static('uploads'))
+
 app.use('/api/auth', userRoutes);
 app.use('/api/vote',voteRoutes);
 app.use('/api/admin/candidate',candidateRoutes) ;
