@@ -10,9 +10,9 @@ const candidateSchema = new Schema(
       type: String,
       required: [true, "Please add partyEntity"],
     },
-    compaignLocation: {
+    compaingLocation: {
       type: String,
-      required: [true, "Please add compaignLocation"],
+      required: [true, "Please add compaingLocation"],
     },
     dateBirth: {
       type: String,
