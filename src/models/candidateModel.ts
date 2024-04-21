@@ -6,6 +6,9 @@ const candidateSchema = new Schema(
       type: String,
       required: [true, "Please add name"],
     },
+    firstname: {
+      type: String,
+    },
     partyEntity: {
       type: String,
       required: [true, "Please add partyEntity"],
