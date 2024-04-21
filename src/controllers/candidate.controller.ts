@@ -18,8 +18,8 @@ export const createCandidateHandler = asyncHandler(
         imageUrl = `${process.env.BACKEND}/static/${filename}`;
       }
       console.log("Body", req.body);
-      let data = {...req.body,imageUrl};
-      console.log({data});
+      let data = { ...req.body, imageUrl };
+      console.log({ data });
       let candidate = await createCandidate(data);
       res.status(201).json(candidate);
     } catch (error) {
@@ -61,8 +61,11 @@ export const updateCandidateHandler = asyncHandler(
         imageUrl = `${process.env.BACKEND}/static/${filename}`;
       }
       console.log("Body", req.body);
-      let data = {...req.body,imageUrl};
-      console.log({data});
+      let data = { ...req.body };
+      if (imageUrl) {
+        data = { ...data, imageUrl };
+      }
+      console.log({ data });
       const { num } = req.params;
       let candidate = await updateCandidate(num, data);
       res.status(200).json(candidate);
