@@ -7,15 +7,36 @@ import {
   updateCandidate,
   deleteCandidate,
 } from "../services/candidate.service";
+import { Storage } from '@google-cloud/storage';
+const storage = new Storage({
+  credentials: JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON)
+});
+const bucketName = process.env.GCS_BUCKET_NAME;
+async function uploadToGoogleCloudStorage(filePath: string, fileName: string): Promise<string> {
+  console.log("Uploading to google cloud storage") ;
+  const bucket = storage.bucket(bucketName);
+  const destination = `images/${fileName}`;
+  const options = {
+      destination,
+      public: true, // This will make the file publicly accessible
+  };
+
+  // Uploads a local file to the bucket
+  await bucket.upload(filePath, options);
+
+  // Assuming the file is made public and you want to generate a public URL:
+  const publicUrl = `https://storage.googleapis.com/${bucketName}/${destination}`;
+  console.log({publicUrl});
+  return publicUrl;
+}
 
 export const createCandidateHandler = asyncHandler(
   async (req: Request, res: Response) => {
     try {
       let imageUrl = null;
-      if (!!req.file) {
-        const { filename } = req.file;
-        console.log("filename==> ", filename);
-        imageUrl = `${process.env.BACKEND}/static/${filename}`;
+      if (req.file) {
+        // Upload to Google Cloud Storage and get the public URL
+        imageUrl = await uploadToGoogleCloudStorage(req.file.path, req.file.filename);
       }
       console.log("Body", req.body);
       let data = { ...req.body, imageUrl };
