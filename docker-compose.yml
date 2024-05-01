@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   backend:
-    image: andryscript/backend:0.2
+    image: back:latest
     container_name: backend
     restart: always
     ports:
@@ -10,5 +10,7 @@ services:
     environment:
       PORT: 5005
       NODE_ENV: production
-      MONGO_URI: mongodb://34.16.147.168:27017/evote
+      MONGO_URI: mongodb://your_root_username:your_root_password@34.132.203.15:6077/evote?authSource=admin
       JWT_SECRET: abc123
+    volumes:
+      - /home/andrykeeper/evote/services/backend/uploads:/usr/src/app/uploads
