@@ -76,10 +76,9 @@ export const updateCandidateHandler = asyncHandler(
   async (req: Request, res: Response) => {
     try {
       let imageUrl = null;
-      if (!!req.file) {
-        const { filename } = req.file;
-        console.log("filename==> ", filename);
-        imageUrl = `${process.env.BACKEND}/static/${filename}`;
+      if (req.file) {
+        // Upload to Google Cloud Storage and get the public URL
+        imageUrl = await uploadToGoogleCloudStorage(req.file.path, req.file.filename);
       }
       console.log("Body", req.body);
       let data = { ...req.body };
