@@ -7,6 +7,7 @@ import {
   updateVoter,
   deleteVoter
 } from "../services/voter.service";
+import Voter from "../models/voterModel";
 
 export const createVoterHandler = asyncHandler(
   async (req: Request, res: Response) => {
@@ -66,3 +67,26 @@ export const deleteVoterHandler = asyncHandler(
     }
   }
 );
+
+export const loginVoter = asyncHandler(async (req, res) => {
+  const { email, password } = req.body
+
+  // Check for user email
+  const user = await Voter.findOne({ email })
+
+  if (user && (password === user.password)) {
+    res.json({
+      ...user,
+      token: generateToken(user._id),
+    })
+  } else {
+    res.status(400)
+    throw new Error('Invalid credentials')
+  }
+})
+
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: '30d',
+  })
+}

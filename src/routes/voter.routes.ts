@@ -4,7 +4,8 @@ import {
   getAllVotersHandler,
   getVoterByNumHandler,
   updateVoterHandler,
-  deleteVoterHandler
+  deleteVoterHandler,
+  loginVoter
 } from "../controllers/voter.controller";
 
 const { protect } = require('../middleware/authMiddleware')
@@ -12,6 +13,7 @@ const { protect } = require('../middleware/authMiddleware')
 const router = express.Router();
 
 router.post("/create", protect, createVoterHandler);
+router.post("/login", loginVoter);
 router.get("/get", protect, getAllVotersHandler);
 router.get("/get/:num", protect, getVoterByNumHandler);
 router.put("/update/:num", protect ,updateVoterHandler);
