@@ -1,3 +1,5 @@
+import { getAllStatsHandler, getAllVotesHandler } from "../controllers/vote.controller";
+
 const express = require('express')
 const router = express.Router()
 const { protect } = require('../middleware/authMiddleware')
@@ -10,5 +12,8 @@ router.post('/',protect, asyncHandler(async(req,res)=>{
     }
     res.status(200).json({message: `Vote to ${req.body.candidateId} added to transaction queue`}) ;
 }));
+
+router.get('/',getAllVotesHandler) ;
+router.get('/stats',getAllStatsHandler) ;
 
 export default router ;
