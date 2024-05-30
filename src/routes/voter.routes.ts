@@ -12,11 +12,11 @@ const { protect } = require('../middleware/authMiddleware')
 
 const router = express.Router();
 
-router.post("/create", protect, createVoterHandler);
+router.post("/create", createVoterHandler);
 router.post("/login", loginVoter);
-router.get("/get", protect, getAllVotersHandler);
-router.get("/get/:num", protect, getVoterByNumHandler);
-router.put("/update/:num", protect ,updateVoterHandler);
-router.delete("/delete/:num", protect, deleteVoterHandler);
+router.get("/get", getAllVotersHandler);
+router.get("/get/:num", getVoterByNumHandler);
+router.put("/update/:num", updateVoterHandler);
+router.delete("/delete/:num", deleteVoterHandler);
 
 export default router;

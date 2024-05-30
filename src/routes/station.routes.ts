@@ -11,10 +11,10 @@ const { protect } = require('../middleware/authMiddleware')
 
 const router = express.Router();
 
-router.post("/create", protect, createStationHandler);
-router.get("/get", protect, getAllStationsHandler);
-router.get("/get/:num", protect, getStationByNumHandler);
-router.put("/update/:num", protect ,updateStationHandler);
-router.delete("/delete/:num", protect, deleteStationHandler);
+router.post("/create", createStationHandler);
+router.get("/get", getAllStationsHandler);
+router.get("/get/:num", getStationByNumHandler);
+router.put("/update/:num", updateStationHandler);
+router.delete("/delete/:num", deleteStationHandler);
 
 export default router;
