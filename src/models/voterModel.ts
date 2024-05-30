@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Mongoose, Schema } from "mongoose";
 
 const voterSchema = new Schema(
   {
@@ -45,7 +45,12 @@ const voterSchema = new Schema(
     password: {
       type: String,
       default: "",
-    }
+    },
+    station: {
+      type: String,
+      required: [true, "Please add a station"],
+      ref: "Station",
+    },
   },
   {
     timestamps: true,
