@@ -5,15 +5,31 @@ import {
   getAllStations,
   getStationById,
   updateStation,
-  deleteStation
+  deleteStation,
 } from "../services/station.service";
 
 export const createStationHandler = asyncHandler(
   async (req: Request, res: Response) => {
     try {
-      console.log("Body", req.body) ;
+      console.log("Body", req.body);
       let station = await createStation(req.body);
       res.status(201).json(station);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+);
+
+export const createMultipleStationHandler = asyncHandler(
+  async (req: Request, res: Response) => {
+    try {
+      console.log("Body", req.body);
+      const { stations } = req.body;
+      for (let station of stations) {
+        const result = await createStation(station);
+        console.log(result);
+      }
+      res.status(201).json({ message: "Stations created" });
     } catch (error) {
       throw new Error(error);
     }

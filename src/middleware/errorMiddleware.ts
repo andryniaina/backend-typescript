@@ -6,7 +6,7 @@ export const errorHandler = (err, req: Request, res: Response, next: NextFunctio
   console.log("Error") ;
   console.log(err) ;
 
-  const statusCode = res.statusCode ? res.statusCode : 500;
+  const statusCode = 400;
 
   res.status(statusCode);
 
