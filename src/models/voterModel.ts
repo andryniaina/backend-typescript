@@ -51,6 +51,10 @@ const voterSchema = new Schema(
       required: [true, "Please add a station"],
       ref: "Station",
     },
+    hasVoted: {
+      type: Boolean,
+      default: false
+    }
   },
   {
     timestamps: true,

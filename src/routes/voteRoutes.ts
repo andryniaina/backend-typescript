@@ -1,4 +1,4 @@
-import { getAllStatsHandler, getAllVotesHandler } from "../controllers/vote.controller";
+import { getAllStatsHandler, getAllVotesHandler, getParticipationRateHandler, getVotersCountHandler } from "../controllers/vote.controller";
 
 const express = require('express')
 const router = express.Router()
@@ -14,6 +14,8 @@ router.post('/',protect, asyncHandler(async(req,res)=>{
 }));
 
 router.get('/',getAllVotesHandler) ;
-router.get('/stats',getAllStatsHandler) ;
+router.get('/votepercandidate',getAllStatsHandler) ;
+router.get('/votercount',getVotersCountHandler) ;
+router.get('/rate',getParticipationRateHandler) ;
 
 export default router ;

@@ -21,6 +21,16 @@ export const getAllVoters = async () => {
   }
 };
 
+// Get the number of Voters
+export const getNumberOfVoters = async () => {
+  try {
+    const count = await Voter.countDocuments();
+    return count;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // Get Voter by numVoter
 export const getVoterById = async (numVoter) => {
   try {
