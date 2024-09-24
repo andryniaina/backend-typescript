@@ -24,8 +24,13 @@ export const getAllStats = async () => {
         "X-Api-Key": orgApiKey,
       },
     });
+    const voterCount = await Voter.countDocuments({ hasVoted: true });
+    let result = {} ;
+    Object.entries(data).forEach(([key, value]:any) => {
+      result[key] = value/voterCount;
+    });
     console.log({ data });
-    return data;
+    return result;
   } catch (error) {
     throw error;
   }
