@@ -1,6 +1,6 @@
 import axios from "axios";
 import Voter from "../models/voterModel";
-const blockchainUrl = "http://34.132.203.15:8080/api/vote";
+const blockchainUrl = "http://34.66.99.143:6200/api/vote";
 const orgApiKey = "ORG1";
 
 export const getAllVotes = async () => {
