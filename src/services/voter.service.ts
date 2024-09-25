@@ -11,6 +11,16 @@ export const createVoter = async (voterData) => {
   }
 };
 
+// Get Voter by email
+export const getVoterByEmail = async (email) => {
+  try {
+    const voter = await Voter.findOne({ email });
+    return voter;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // Get all Voters
 export const getAllVoters = async () => {
   try {

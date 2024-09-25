@@ -5,7 +5,8 @@ import {
   getAllVoters,
   getVoterById,
   updateVoter,
-  deleteVoter
+  deleteVoter,
+  getVoterByEmail
 } from "../services/voter.service";
 import Voter from "../models/voterModel";
 
@@ -76,6 +77,23 @@ export const loginVoter = asyncHandler(async (req, res) => {
 
   if (user && (password === user.password)) {
     res.json({
+      ...user,
+      token: generateToken(user._id),
+    })
+  } else {
+    res.status(400)
+    throw new Error('Invalid credentials')
+  }
+})
+
+export const getVoterByEmailHandler = asyncHandler(async (req, res) => {
+  const { email } = req.body
+
+  // Check for user email
+  const user = await getVoterByEmail(email)
+
+  if (user) {
+    res.status(200).json({
       ...user,
       token: generateToken(user._id),
     })
