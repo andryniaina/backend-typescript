@@ -3,7 +3,8 @@ import asyncHandler from "express-async-handler";
 import {
     getAllStats,
     getAllVotes,
-    getParticipationRate
+    getParticipationRate,
+    getVotesPercentagePerStration
 } from "../services/vote.service";
 import { getNumberOfVoters } from "../services/voter.service";
 
@@ -11,6 +12,17 @@ export const getAllStatsHandler = asyncHandler(
   async (req: Request, res: Response) => {
     try {
       const data = await getAllStats() ;
+      res.status(200).json(data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+);
+
+export const getVotesPercentagePerStrationHandler = asyncHandler(
+  async (req: Request, res: Response) => {
+    try {
+      const data = await getVotesPercentagePerStration() ;
       res.status(200).json(data);
     } catch (error) {
       throw new Error(error);
