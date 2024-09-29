@@ -11,6 +11,16 @@ export const createStation = async (stationData) => {
   }
 };
 
+// Convert station id to station name
+export const getStationNameById = async (numStation) => {
+  try {
+    const station = await Station.findById(numStation);
+    return station.name;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // Get all Stations
 export const getAllStations = async () => {
   try {

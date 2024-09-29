@@ -5,7 +5,6 @@ import {
   getVoterByNumHandler,
   updateVoterHandler,
   deleteVoterHandler,
-  loginVoter,
   getVoterByEmailHandler
 } from "../controllers/voter.controller";
 

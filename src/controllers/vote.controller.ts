@@ -4,7 +4,9 @@ import {
     getAllStats,
     getAllVotes,
     getParticipationRate,
-    getVotesPercentagePerStration
+    getVotesPercentagePerStration,
+    getVotesPercentagePerStationByCandidateId,
+    getVotersParticipationRatePerStation
 } from "../services/vote.service";
 import { getNumberOfVoters } from "../services/voter.service";
 
@@ -23,6 +25,17 @@ export const getVotesPercentagePerStrationHandler = asyncHandler(
   async (req: Request, res: Response) => {
     try {
       const data = await getVotesPercentagePerStration() ;
+      res.status(200).json(data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+);
+
+export const getVotersParticipationRatePerStationHandler = asyncHandler(
+  async (req: Request, res: Response) => {
+    try {
+      const data = await getVotersParticipationRatePerStation() ;
       res.status(200).json(data);
     } catch (error) {
       throw new Error(error);
@@ -57,6 +70,18 @@ export const getParticipationRateHandler = asyncHandler(
     try {
       const rate = await getParticipationRate();
       res.status(200).json({participationRate: rate});
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+)
+
+export const getVotesPercentagePerStationByCandidateIdHandler = asyncHandler(
+  async (req: Request, res: Response) => {
+    try {
+      const { candidateId } = req.params;
+      const votesPercentagePerStation = await getVotesPercentagePerStationByCandidateId(candidateId);
+      res.status(200).json(votesPercentagePerStation);
     } catch (error) {
       throw new Error(error);
     }

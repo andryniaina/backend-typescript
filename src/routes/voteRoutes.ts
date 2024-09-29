@@ -4,6 +4,8 @@ import {
   getParticipationRateHandler,
   getVotersCountHandler,
   getVotesPercentagePerStrationHandler,
+  getVotesPercentagePerStationByCandidateIdHandler,
+  getVotersParticipationRatePerStationHandler
 } from "../controllers/vote.controller";
 
 const express = require("express");
@@ -32,5 +34,7 @@ router.get("/votepercandidate", getAllStatsHandler);
 router.get("/votercount", getVotersCountHandler);
 router.get("/rate", getParticipationRateHandler);
 router.get("/voteperstation", getVotesPercentagePerStrationHandler);
+router.get("/voteperstationcandidate/:candidateId", getVotesPercentagePerStationByCandidateIdHandler);
+router.get("/votersperstation", getVotersParticipationRatePerStationHandler);
 
 export default router;

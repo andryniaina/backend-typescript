@@ -1,6 +1,7 @@
 import axios from "axios";
 import Voter from "../models/voterModel";
 import Candidate from "../models/candidateModel";
+import { getStationNameById } from "./station.service";
 const blockchainUrl = "http://34.66.99.143:6200/api/vote";
 const orgApiKey = "ORG1";
 
@@ -13,6 +14,68 @@ export const getAllVotes = async () => {
     });
     console.log({ data });
     return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getVotersCountPerStation = async () => {
+  try {
+    const voters = await Voter.find();
+    const voteCountPerStation = voters.reduce((acc, voter:any) => {
+      if (acc[voter.station]) {
+        acc[voter.station] += 1;
+      } else {
+        acc[voter.station] = 1;
+      }
+      return acc;
+    }, {} as Record<string, number>);
+    return voteCountPerStation;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getVoteCountPerStation = async () => {
+  try {
+    interface Vote {
+      CandidateID: string,
+      Station: string,
+      VoterID: string
+    }
+    const allVotes = await getAllVotes() as Vote[];
+    const voteCountPerStation = allVotes.reduce((acc, vote) => {
+      if (acc[vote.Station]) {
+        acc[vote.Station] += 1;
+      } else {
+        acc[vote.Station] = 1;
+      }
+      return acc;
+    }, {} as Record<string, number>);
+    return voteCountPerStation;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getVotersParticipationRatePerStation = async () => {
+  try {
+    const votersCountPerStation = await getVotersCountPerStation();
+    const voteCountPerStation = await getVoteCountPerStation();
+    console.log({votersCountPerStation,voteCountPerStation}) ;
+    const participationRatePerStation = Object.entries(voteCountPerStation).reduce((acc, [station, count]) => {
+      acc[station] = (count / votersCountPerStation[station]) * 100;
+      return acc;
+    }, {} as Record<string, number>);
+    console.log({ participationRatePerStation });
+    const participationRatePerStationWithStationName = Object.entries(participationRatePerStation).reduce(async(acc, [station, participationRate]) => {
+      const stationName= await getStationNameById(station);
+      acc[stationName] = 
+        participationRate ;
+      return acc;
+    }, {} as Record<string, any>);
+    console.log({participationRatePerStationWithStationName})
+    return participationRatePerStationWithStationName;
   } catch (error) {
     throw error;
   }
@@ -39,7 +102,50 @@ export const getVotesPercentagePerStration = async () => {
       acc[station] = (count / totalVoteCount) * 100;
       return acc;
     }, {} as Record<string, number>);
-    return votePercentagePerStation;
+    const votePercentagePerStationWithStationName = Object.entries(votePercentagePerStation).reduce(async(acc, [station, votePercentage]) => {
+      const stationName= await getStationNameById(station);
+      acc[stationName] = 
+        votePercentage ;
+      return acc;
+    }, {} as Record<string, any>);
+    console.log({votePercentagePerStationWithStationName})
+    return votePercentagePerStationWithStationName;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// get vote percentage per station by candidateId
+export const getVotesPercentagePerStationByCandidateId = async (candidateId) => {
+  try {
+    interface Vote {
+      CandidateID: string,
+      Station: string,
+      VoterID: string
+    }
+    const allVotes = await getAllVotes() as Vote[];
+    const votesForCandidate = allVotes.filter((vote) => vote.CandidateID === candidateId);
+    const voteCountPerStation = votesForCandidate.reduce((acc, vote) => {
+      if (acc[vote.Station]) {
+        acc[vote.Station] += 1;
+      } else {
+        acc[vote.Station] = 1;
+      }
+      return acc;
+    }, {} as Record<string, number>);
+    const totalVoteCount = await votesForCandidate.length;
+    const votePercentagePerStation = Object.entries(voteCountPerStation).reduce((acc, [station, count]) => {
+      acc[station] = (count / totalVoteCount) * 100;
+      return acc;
+    }, {} as Record<string, number>); 
+    const votePercentagePerStationWithStationName = Object.entries(votePercentagePerStation).reduce(async(acc, [station, votePercentage]) => {
+      const stationName= await getStationNameById(station);
+      acc[stationName] = 
+        votePercentage ;
+      return acc;
+    }, {} as Record<string, any>);
+    console.log({votePercentagePerStationWithStationName})
+    return votePercentagePerStationWithStationName;
   } catch (error) {
     throw error;
   }

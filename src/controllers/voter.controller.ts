@@ -76,10 +76,9 @@ export const loginVoter = asyncHandler(async (req, res) => {
   const user = await Voter.findOne({ email })
 
   if (user && (password === user.password)) {
-    res.json({
-      ...user,
-      token: generateToken(user._id),
-    })
+    res.json(
+      user
+    )
   } else {
     res.status(400)
     throw new Error('Invalid credentials')
@@ -89,22 +88,16 @@ export const loginVoter = asyncHandler(async (req, res) => {
 export const getVoterByEmailHandler = asyncHandler(async (req, res) => {
   const { email } = req.body
 
+  console.log({email})
   // Check for user email
   const user = await getVoterByEmail(email)
 
+  console.log({user})
+
   if (user) {
-    res.status(200).json({
-      ...user,
-      token: generateToken(user._id),
-    })
+    res.status(200).json(user)
   } else {
     res.status(400)
     throw new Error('Invalid credentials')
   }
 })
-
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: '30d',
-  })
-}
