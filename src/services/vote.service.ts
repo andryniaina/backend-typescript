@@ -174,7 +174,7 @@ export const getVotesPercentagePerStationByCandidateId = async (
       },
       {} as Record<string, number>
     );
-    const votePercentagePerStationWithStationName = Object.entries(
+    /* const votePercentagePerStationWithStationName = Object.entries(
       votePercentagePerStation
     ).reduce(async (acc, [station, votePercentage]) => {
       const stationName = await getStationNameById(station);
@@ -182,6 +182,18 @@ export const getVotesPercentagePerStationByCandidateId = async (
       return acc;
     }, {} as Record<string, any>);
     console.log({ votePercentagePerStationWithStationName });
+    return votePercentagePerStationWithStationName; */
+    let votePercentagePerStationWithStationName = {};
+    for (const key in votePercentagePerStation) {
+      try {
+        const stationName = await getStationNameById(key);
+        votePercentagePerStationWithStationName[stationName] =
+          votePercentagePerStation[key];
+      } catch (error) {
+        votePercentagePerStationWithStationName[key] =
+          votePercentagePerStation[key];
+      }
+    }
     return votePercentagePerStationWithStationName;
   } catch (error) {
     throw error;
