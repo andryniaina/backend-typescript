@@ -22,7 +22,7 @@ export const getAllVotes = async () => {
 export const getVotersCountPerStation = async () => {
   try {
     const voters = await Voter.find();
-    const voteCountPerStation = voters.reduce((acc, voter:any) => {
+    const voteCountPerStation = voters.reduce((acc, voter: any) => {
       if (acc[voter.station]) {
         acc[voter.station] += 1;
       } else {
@@ -39,11 +39,11 @@ export const getVotersCountPerStation = async () => {
 export const getVoteCountPerStation = async () => {
   try {
     interface Vote {
-      CandidateID: string,
-      Station: string,
-      VoterID: string
+      CandidateID: string;
+      Station: string;
+      VoterID: string;
     }
-    const allVotes = await getAllVotes() as Vote[];
+    const allVotes = (await getAllVotes()) as Vote[];
     const voteCountPerStation = allVotes.reduce((acc, vote) => {
       if (acc[vote.Station]) {
         acc[vote.Station] += 1;
@@ -62,8 +62,10 @@ export const getVotersParticipationRatePerStation = async () => {
   try {
     const votersCountPerStation = await getVotersCountPerStation();
     const voteCountPerStation = await getVoteCountPerStation();
-    console.log({votersCountPerStation,voteCountPerStation}) ;
-    const participationRatePerStation = Object.entries(voteCountPerStation).reduce((acc, [station, count]) => {
+    console.log({ votersCountPerStation, voteCountPerStation });
+    const participationRatePerStation = Object.entries(
+      voteCountPerStation
+    ).reduce((acc, [station, count]) => {
       acc[station] = (count / votersCountPerStation[station]) * 100;
       return acc;
     }, {} as Record<string, number>);
@@ -76,10 +78,16 @@ export const getVotersParticipationRatePerStation = async () => {
     }, {} as Record<string, any>);
     console.log({participationRatePerStationWithStationName})
     return participationRatePerStationWithStationName; */
-    let participationRatePerStationWithStationName = {} ;
-    for(const key in participationRatePerStation) {
-      const stationName = await getStationNameById(key);
-      participationRatePerStationWithStationName[stationName] = participationRatePerStation[key];
+    let participationRatePerStationWithStationName = {};
+    for (const key in participationRatePerStation) {
+      try {
+        const stationName = await getStationNameById(key);
+        participationRatePerStationWithStationName[stationName] =
+          participationRatePerStation[key];
+      } catch (error) {
+        participationRatePerStationWithStationName[key] =
+          participationRatePerStation[key];
+      }
     }
     return participationRatePerStationWithStationName;
   } catch (error) {
@@ -90,11 +98,11 @@ export const getVotersParticipationRatePerStation = async () => {
 export const getVotesPercentagePerStration = async () => {
   try {
     interface Vote {
-      CandidateID: string,
-      Station: string,
-      VoterID: string
+      CandidateID: string;
+      Station: string;
+      VoterID: string;
     }
-    const allVotes = await getAllVotes() as Vote[];
+    const allVotes = (await getAllVotes()) as Vote[];
     const voteCountPerStation = allVotes.reduce((acc, vote) => {
       if (acc[vote.Station]) {
         acc[vote.Station] += 1;
@@ -103,12 +111,15 @@ export const getVotesPercentagePerStration = async () => {
       }
       return acc;
     }, {} as Record<string, number>);
-    const totalVoteCount = await Voter.countDocuments({hasVoted : true});
-    const votePercentagePerStation = Object.entries(voteCountPerStation).reduce((acc, [station, count]) => {
-      acc[station] = (count / totalVoteCount) * 100;
-      return acc;
-    }, {} as Record<string, number>);
-   /*  const votePercentagePerStationWithStationName = Object.entries(votePercentagePerStation).reduce(async(acc, [station, votePercentage]) => {
+    const totalVoteCount = await Voter.countDocuments({ hasVoted: true });
+    const votePercentagePerStation = Object.entries(voteCountPerStation).reduce(
+      (acc, [station, count]) => {
+        acc[station] = (count / totalVoteCount) * 100;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
+    /*  const votePercentagePerStationWithStationName = Object.entries(votePercentagePerStation).reduce(async(acc, [station, votePercentage]) => {
       const stationName= await getStationNameById(station);
       acc[stationName] = 
         votePercentage ;
@@ -116,10 +127,16 @@ export const getVotesPercentagePerStration = async () => {
     }, {} as Record<string, any>);
     console.log({votePercentagePerStationWithStationName})
     return votePercentagePerStationWithStationName; */
-    let votePercentagePerStationWithStationName = {} ;
-    for(const key in votePercentagePerStation) {
-      const stationName = await getStationNameById(key);
-      votePercentagePerStationWithStationName[stationName] = votePercentagePerStation[key];
+    let votePercentagePerStationWithStationName = {};
+    for (const key in votePercentagePerStation) {
+      try {
+        const stationName = await getStationNameById(key);
+        votePercentagePerStationWithStationName[stationName] =
+          votePercentagePerStation[key];
+      } catch (error) {
+        votePercentagePerStationWithStationName[key] =
+          votePercentagePerStation[key];
+      }
     }
     return votePercentagePerStationWithStationName;
   } catch (error) {
@@ -128,15 +145,19 @@ export const getVotesPercentagePerStration = async () => {
 };
 
 // get vote percentage per station by candidateId
-export const getVotesPercentagePerStationByCandidateId = async (candidateId) => {
+export const getVotesPercentagePerStationByCandidateId = async (
+  candidateId
+) => {
   try {
     interface Vote {
-      CandidateID: string,
-      Station: string,
-      VoterID: string
+      CandidateID: string;
+      Station: string;
+      VoterID: string;
     }
-    const allVotes = await getAllVotes() as Vote[];
-    const votesForCandidate = allVotes.filter((vote) => vote.CandidateID === candidateId);
+    const allVotes = (await getAllVotes()) as Vote[];
+    const votesForCandidate = allVotes.filter(
+      (vote) => vote.CandidateID === candidateId
+    );
     const voteCountPerStation = votesForCandidate.reduce((acc, vote) => {
       if (acc[vote.Station]) {
         acc[vote.Station] += 1;
@@ -146,17 +167,21 @@ export const getVotesPercentagePerStationByCandidateId = async (candidateId) => 
       return acc;
     }, {} as Record<string, number>);
     const totalVoteCount = await votesForCandidate.length;
-    const votePercentagePerStation = Object.entries(voteCountPerStation).reduce((acc, [station, count]) => {
-      acc[station] = (count / totalVoteCount) * 100;
-      return acc;
-    }, {} as Record<string, number>); 
-    const votePercentagePerStationWithStationName = Object.entries(votePercentagePerStation).reduce(async(acc, [station, votePercentage]) => {
-      const stationName= await getStationNameById(station);
-      acc[stationName] = 
-        votePercentage ;
+    const votePercentagePerStation = Object.entries(voteCountPerStation).reduce(
+      (acc, [station, count]) => {
+        acc[station] = (count / totalVoteCount) * 100;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
+    const votePercentagePerStationWithStationName = Object.entries(
+      votePercentagePerStation
+    ).reduce(async (acc, [station, votePercentage]) => {
+      const stationName = await getStationNameById(station);
+      acc[stationName] = votePercentage;
       return acc;
     }, {} as Record<string, any>);
-    console.log({votePercentagePerStationWithStationName})
+    console.log({ votePercentagePerStationWithStationName });
     return votePercentagePerStationWithStationName;
   } catch (error) {
     throw error;
@@ -173,15 +198,15 @@ export const getAllStats = async () => {
     const voterCount = await Voter.countDocuments({ hasVoted: true });
     const candidates = await Candidate.find();
     const candidatesId = candidates.map((candidate) => candidate._id);
-    let result = {} ;
-    Object.entries(data).forEach(([key, value]: [any,number]) => {
-      result[key] = (value/voterCount)*100 ;
+    let result = {};
+    Object.entries(data).forEach(([key, value]: [any, number]) => {
+      result[key] = (value / voterCount) * 100;
     });
-    candidatesId.forEach((candidateId:any) => {
-      result[candidateId] = result[candidateId] ? result[candidateId] : 0 ;
+    candidatesId.forEach((candidateId: any) => {
+      result[candidateId] = result[candidateId] ? result[candidateId] : 0;
     });
     console.log({ data });
-    console.log({result});
+    console.log({ result });
     return result;
   } catch (error) {
     throw error;
@@ -193,12 +218,13 @@ export const getParticipationRate = async () => {
   try {
     // Count the total number of voters
     const totalVoters = await Voter.countDocuments();
-    
+
     // Count the number of voters who have voted
     const votersWhoVoted = await Voter.countDocuments({ hasVoted: true });
 
     // Calculate the participation rate
-    const participationRate = totalVoters > 0 ? (votersWhoVoted / totalVoters) * 100 : 0;
+    const participationRate =
+      totalVoters > 0 ? (votersWhoVoted / totalVoters) * 100 : 0;
 
     return participationRate;
   } catch (error) {
