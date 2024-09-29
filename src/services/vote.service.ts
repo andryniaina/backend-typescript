@@ -68,13 +68,19 @@ export const getVotersParticipationRatePerStation = async () => {
       return acc;
     }, {} as Record<string, number>);
     console.log({ participationRatePerStation });
-    const participationRatePerStationWithStationName = Object.entries(participationRatePerStation).reduce(async(acc, [station, participationRate]) => {
+    /* const participationRatePerStationWithStationName = Object.entries(participationRatePerStation).reduce(async(acc, [station, participationRate]) => {
       const stationName= await getStationNameById(station);
       acc[stationName] = 
         participationRate ;
       return acc;
     }, {} as Record<string, any>);
     console.log({participationRatePerStationWithStationName})
+    return participationRatePerStationWithStationName; */
+    let participationRatePerStationWithStationName = {} ;
+    for(const key in participationRatePerStation) {
+      const stationName = await getStationNameById(key);
+      participationRatePerStationWithStationName[stationName] = participationRatePerStation[key];
+    }
     return participationRatePerStationWithStationName;
   } catch (error) {
     throw error;
@@ -102,13 +108,19 @@ export const getVotesPercentagePerStration = async () => {
       acc[station] = (count / totalVoteCount) * 100;
       return acc;
     }, {} as Record<string, number>);
-    const votePercentagePerStationWithStationName = Object.entries(votePercentagePerStation).reduce(async(acc, [station, votePercentage]) => {
+   /*  const votePercentagePerStationWithStationName = Object.entries(votePercentagePerStation).reduce(async(acc, [station, votePercentage]) => {
       const stationName= await getStationNameById(station);
       acc[stationName] = 
         votePercentage ;
       return acc;
     }, {} as Record<string, any>);
     console.log({votePercentagePerStationWithStationName})
+    return votePercentagePerStationWithStationName; */
+    let votePercentagePerStationWithStationName = {} ;
+    for(const key in votePercentagePerStation) {
+      const stationName = await getStationNameById(key);
+      votePercentagePerStationWithStationName[stationName] = votePercentagePerStation[key];
+    }
     return votePercentagePerStationWithStationName;
   } catch (error) {
     throw error;
